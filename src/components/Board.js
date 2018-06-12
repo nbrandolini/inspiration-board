@@ -15,14 +15,31 @@ class Board extends Component {
       cards: [],
     };
   }
+  componentDidMount = () => {
+      console.log('Component did mount was called');
 
+      axios.get('https://inspiration-board.herokuapp.com/boards/Nicoleta/cards')
+        .then( (response) => {
+          console.log( response.data );
+          this.setState({
+            cards: response.data
+          });
+        })
+        .catch((error) => {
+          console.log("got to the error");
+          console.log(error);
+          this.setState({
+            error: error.message
+          });
+        });
+    };
   renderCards = () => {
-    const cards = CARD_DATA.cards.map((card, index) => {
-      return (
+    const cards = this.state.cards.map((card, index) => {
+           return (
           <Card
             key= {index}
-            text= {card.text}
-            emoji= {card.emoji}
+            text= {card.card.text}
+            emoji= {card.card.emoji}
           />
         );
       } )
@@ -31,7 +48,8 @@ class Board extends Component {
 }
 render() {
     return (
-      <div>
+      <div className="board">
+
         {this.renderCards()}
       </div>
     );
