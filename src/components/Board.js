@@ -8,6 +8,7 @@ import NewCardForm from './NewCardForm';
 import CARD_DATA from '../data/card-data.json';
 
 class Board extends Component {
+
   constructor() {
     super();
 
@@ -15,46 +16,50 @@ class Board extends Component {
       cards: [],
     };
   }
+
   componentDidMount = () => {
-      console.log('Component did mount was called');
+    const BOARD_URL =  `https://inspiration-board.herokuapp.com/boards/Nicoleta/cards`;
 
-      axios.get('https://inspiration-board.herokuapp.com/boards/Nicoleta/cards')
-        .then( (response) => {
-          console.log( response.data );
-          this.setState({
-            cards: response.data
-          });
-        })
-        .catch((error) => {
-          console.log("got to the error");
-          console.log(error);
-          this.setState({
-            error: error.message
-          });
-        });
-    };
-  renderCards = () => {
-    const cards = this.state.cards.map((card, index) => {
-           return (
-          <Card
-            key= {index}
-            text= {card.card.text}
-            emoji= {card.card.emoji}
-          />
-        );
-      } )
-      console.log(cards);
-      return cards;
-}
-render() {
+    axios.get(BOARD_URL)
+    .then((response) => {
+      console.log(response.data);
+      this.setState({
+        cards: response.data,
+      });
+    })
+    .catch((error) => {
+      console.log("got to the error");
+      console.log(error);
+      this.setState({
+        error: error.message
+      });
+    });
+  };
+
+
+  renderCardList =() => {
+    // console.log(cards)
+    const cardsList = this.state.cards.map((item, index) => {
+      // console.log(item)
+      return (
+        <Card
+        key= {index}
+        text= {item.card.text}
+        emoji= {item.card.emoji}
+        />
+      );
+    });
+    return cardsList;
+  };
+
+  render() {
+
     return (
-      <div className="board">
-
-        {this.renderCards()}
-      </div>
-    );
-  }
-
+      <section className="board">
+      {this.renderCardList()}
+      <NewCardForm />
+      </section>
+    );}
 }
 
 Board.propTypes = {

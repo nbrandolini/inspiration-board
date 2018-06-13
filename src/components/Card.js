@@ -5,8 +5,8 @@ import emoji from 'emoji-dictionary';
 import './Card.css';
 
 
-
 class Card extends Component {
+
   renderEmoji = () => {
     if(this.props.emoji) {
       return (
@@ -14,11 +14,15 @@ class Card extends Component {
       );
     }
   };
+
   render() {
     return (
       <div className="card">
-        <p> {this.props.text}</p>
-        <p>{this.renderEmoji()}</p>
+        <section className="card__content">
+          <span className="card__content-text">{this.props.text}</span>
+          <span className="card__content-emoji">{this.renderEmoji()}</span>
+          <button className="card__delete">X</button>
+        </section>
       </div>
     )
   }
@@ -26,7 +30,7 @@ class Card extends Component {
 
 Card.propTypes = {
   text: PropTypes.string.isRequired,
-  emoji:PropTypes.string.isRequired,
+  emoji: PropTypes.string.isRequired,
 };
 
 export default Card;
