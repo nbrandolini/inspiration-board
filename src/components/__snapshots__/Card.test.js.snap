@@ -28,6 +28,7 @@ ShallowWrapper {
         />
         <button
                 className="card__delete"
+                onClick={[Function]}
         >
                 X
         </button>
@@ -49,6 +50,7 @@ ShallowWrapper {
 />,
           <button
             className="card__delete"
+            onClick={[Function]}
 >
             X
 </button>,
@@ -88,6 +90,7 @@ ShallowWrapper {
           "props": Object {
             "children": "X",
             "className": "card__delete",
+            "onClick": [Function],
           },
           "ref": null,
           "rendered": "X",
@@ -115,6 +118,7 @@ ShallowWrapper {
           />
           <button
                     className="card__delete"
+                    onClick={[Function]}
           >
                     X
           </button>
@@ -136,6 +140,7 @@ ShallowWrapper {
 />,
             <button
               className="card__delete"
+              onClick={[Function]}
 >
               X
 </button>,
@@ -175,6 +180,7 @@ ShallowWrapper {
             "props": Object {
               "children": "X",
               "className": "card__delete",
+              "onClick": [Function],
             },
             "ref": null,
             "rendered": "X",
