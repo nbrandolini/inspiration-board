@@ -76,15 +76,15 @@ class Board extends Component {
     });
   };
 
-  deleteCard = () => {
-    const URL = `https://inspiation-board.herokuapp.com/boards/${this.props.boardName}/cards/${this.props.id}`;
+  deleteCard = (id) => {
+    const URL = `https://inspiration-board.herokuapp.com/boards/${this.props.boardName}/cards/${id}`;
     let cardList = this.state.cards;
 
     axios.delete(URL)
     .then((response) => {
-      cardList = cardList.filter(card => card.card.id !== this.props.id);
-      this.setState ({
-        cardList,
+      cardList = cardList.filter(item => item.card.id !== id);
+      this.setState({
+        cards: cardList,
         message: 'Card was succesfully deleted',
       });
     })
@@ -109,7 +109,7 @@ class Board extends Component {
 
 Board.propTypes = {
   boardName: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  // id: PropTypes.number.isRequired,
 };
 
   export default Board;
