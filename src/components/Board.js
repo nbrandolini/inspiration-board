@@ -28,19 +28,14 @@ class Board extends Component {
       });
     })
     .catch((error) => {
-      console.log("got to the error");
-      console.log(error);
       this.setState({
         error: error.message
       });
     });
   };
 
-
   renderCardList =() => {
-    // console.log(cards)
     const cardsList = this.state.cards.map((item, index) => {
-      // console.log(item)
       return (
         <Card
         key= {index}
@@ -52,12 +47,31 @@ class Board extends Component {
     return cardsList;
   };
 
+  renderError = () => {
+    if (this.state.error) {
+      return (
+        <p>{this.state.error}</p>
+      );
+    }
+  };
+
+  addCard = (card) => {
+    const cardsList = this.state.cards;
+    const newCard = { card: card };
+
+    cardsList.push(newCard);
+    this.setState({
+      cardsList,
+    });
+  };
+
   render() {
 
     return (
       <section className="board">
       {this.renderCardList()}
-      <NewCardForm />
+      {this.renderError()}
+        <NewCardForm addCardCallback={this.addCard} />
       </section>
     );}
 }
