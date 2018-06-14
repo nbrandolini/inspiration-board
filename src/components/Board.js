@@ -35,16 +35,18 @@ class Board extends Component {
   };
 
   renderCardList =() => {
-    const cardsList = this.state.cards.map((item, index) => {
+    const cardList = this.state.cards.map((item, index) => {
       return (
         <Card
         key= {index}
+        id= {item.card.id}
         text= {item.card.text}
         emoji= {item.card.emoji}
+        deleteCardCallback={this.deleteCard}
         />
       );
     });
-    return cardsList;
+    return cardList;
   };
 
   renderMessage = () => {
@@ -56,22 +58,42 @@ class Board extends Component {
   };
 
   addCard = (card) => {
-    const cardsList = this.state.cards;
+    const cardList = this.state.cards;
     const newCard = { card: card };
     const POST_URL = `https://inspiration-board.herokuapp.com/boards/${this.props.boardName}/cards`
     axios.post(POST_URL, card)
-      .then((response) => {
-        cardsList.push(newCard);
-        this.setState({
-          cardsList,
-          message: 'Succesfully added a new card!',
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          message: error.message,
-        })
-      })
+    .then((response) => {
+      cardList.push(newCard);
+      this.setState({
+        cardList,
+        message: 'Succesfully added a new card!',
+      });
+    })
+    .catch((error) => {
+      this.setState({
+        message: error.message,
+      });
+    });
+  };
+
+  deleteCard = () => {
+    const URL = `https://inspiation-board.herokuapp.com/boards/${this.props.boardName}/cards/${this.props.id}`;
+    let cardList = this.state.cards;
+
+    axios.delete(URL)
+    .then((response) => {
+      cardList = cardList.filter(card => card.card.id !== this.props.id);
+      this.setState ({
+        cardList,
+        message: 'Card was succesfully deleted',
+      });
+    })
+    .catch((error) => {
+      this.setState({
+        messsage: error.message,
+      });
+    });
+
   };
 
   render() {
@@ -80,13 +102,14 @@ class Board extends Component {
       <section className="board">
       {this.renderCardList()}
       {this.renderMessage()}
-        <NewCardForm addCardCallback={this.addCard} />
+      <NewCardForm addCardCallback={this.addCard} />
       </section>
     );}
-}
+  }
 
 Board.propTypes = {
   boardName: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
-export default Board;
+  export default Board;
