@@ -18,7 +18,7 @@ class Board extends Component {
   }
 
   componentDidMount = () => {
-    const BOARD_URL =  `https://inspiration-board.herokuapp.com/boards/Nicoleta/cards`;
+    const BOARD_URL =  `https://inspiration-board.herokuapp.com/boards/${this.props.boardName}/cards`;
 
     axios.get(BOARD_URL)
     .then((response) => {
@@ -29,7 +29,7 @@ class Board extends Component {
     })
     .catch((error) => {
       this.setState({
-        error: error.message
+        error: error.message,
       });
     });
   };
@@ -47,10 +47,10 @@ class Board extends Component {
     return cardsList;
   };
 
-  renderError = () => {
-    if (this.state.error) {
+  renderMessage = () => {
+    if (this.state.message) {
       return (
-        <p>{this.state.error}</p>
+        <p>{this.state.message}</p>
       );
     }
   };
@@ -58,11 +58,20 @@ class Board extends Component {
   addCard = (card) => {
     const cardsList = this.state.cards;
     const newCard = { card: card };
-
-    cardsList.push(newCard);
-    this.setState({
-      cardsList,
-    });
+    const POST_URL = `https://inspiration-board.herokuapp.com/boards/${this.props.boardName}/cards`
+    axios.post(POST_URL, card)
+      .then((response) => {
+        cardsList.push(newCard);
+        this.setState({
+          cardsList,
+          message: 'Succesfully added a new card!',
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          message: error.message,
+        })
+      })
   };
 
   render() {
@@ -70,14 +79,14 @@ class Board extends Component {
     return (
       <section className="board">
       {this.renderCardList()}
-      {this.renderError()}
+      {this.renderMessage()}
         <NewCardForm addCardCallback={this.addCard} />
       </section>
     );}
 }
 
 Board.propTypes = {
-
+  boardName: PropTypes.string.isRequired,
 };
 
 export default Board;
