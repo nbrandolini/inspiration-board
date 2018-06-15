@@ -64,8 +64,8 @@ class Board extends Component {
     .then((response) => {
       cardList.push(newCard);
       this.setState({
-        cardList,
         message: 'Succesfully added a new card!',
+        cardList,
       });
     })
     .catch((error) => {
@@ -99,9 +99,9 @@ class Board extends Component {
 
     return (
       <section className="board">
-      {this.renderCardList()}
-      {this.renderMessage()}
       <NewCardForm addCardCallback={this.addCard} />
+      <div className="cards">{this.renderCardList()}</div>
+      {this.renderMessage()}
       </section>
     );}
   }
